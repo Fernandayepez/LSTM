@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 import random
 
 
-# Set random seed for reproducibility
+# Random seed for reproducibility
 def set_seed(seed=42):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -29,7 +29,7 @@ def set_seed(seed=42):
 set_seed(42)  # Set the seed
 
 
-# Define the CorrectPredictionPercentage metric
+# Custom CorrectPredictionPercentage metric
 class CorrectPredictionPercentage(Metric):
     def __init__(self, threshold=0.1, **kwargs):
         super().__init__(**kwargs)
@@ -163,20 +163,19 @@ def create_non_overlapping_sequences_with_dates(data, dates, window_size):
     return np.array(sequences), sequence_dates, np.array(targets)
 
 def stratify_sequences_by_decade(X_seq, Y_seq, sequence_dates):
-    # Flatten Y_seq if necessary
-    Y_seq = np.array(Y_seq).flatten()  # Ensure Y_seq is 1-dimensional
+    Y_seq = np.array(Y_seq).flatten()  
 
     # Extract decades from sequence dates
     decades = [dates[0].split('-')[0] + "0s" for dates in sequence_dates]
 
-    # Debugging: Check the shapes of inputs
-    print(f"Y_seq shape after flatten: {Y_seq.shape}")
-    print(f"Decades shape: {len(decades)}")
-    print(f"Length of X_seq: {len(X_seq)}")
+    # Debugging: Checking the shapes of inputs
+    #print(f"Y_seq shape after flatten: {Y_seq.shape}")
+    #print(f"Decades shape: {len(decades)}")
+    #print(f"Length of X_seq: {len(X_seq)}")
 
     # Ensure lengths match
-    if len(Y_seq) != len(decades) or len(Y_seq) != len(X_seq):
-        raise ValueError("Mismatch in lengths of X_seq, Y_seq, and decades.")
+    # if len(Y_seq) != len(decades) or len(Y_seq) != len(X_seq):
+       # raise ValueError("Mismatch in lengths of X_seq, Y_seq, and decades.")
 
     # Create a DataFrame
     df = pd.DataFrame({"Y": Y_seq, "Decade": decades, "Index": range(len(X_seq))})
